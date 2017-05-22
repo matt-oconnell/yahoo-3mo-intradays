@@ -1,7 +1,7 @@
 import urllib2
 import json
 import datetime
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory, jsonify
 
 def to_timestamp(str_date):
     return int(datetime.datetime.strptime(str_date, '%m/%d/%Y|%H:%M').strftime("%s"))
@@ -46,10 +46,18 @@ def fetch(ticker):
 
 app = Flask(__name__)
 
-@app.route('/<ticker>')
-def index(ticker):
+@app.route('/')
+def index():
+    return render_template('home.html')
+
+@app.route('/ticker/<ticker>')
+def ticker(ticker):
     collection = fetch(ticker)
-    return render_template('table.html', collection=collection)
+    return jsonify(collection)
+
+@app.route('/js/<path:path>')
+def send_js(path):
+    return send_from_directory('dist', path)
 
 
 if __name__ == "__main__":
