@@ -9,7 +9,6 @@ lib
 *.egg-info
 bin
 build
-dist
 sdist
 eggs
 env
@@ -35,6 +34,5 @@ pip-log.txt
 # JS
 .DS_Store
 node_modules/
-dist/
 npm-debug.log
 yarn-error.log

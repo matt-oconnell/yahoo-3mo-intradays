@@ -1,22 +1,23 @@
 <template>
   <div id="app">
-    <table style="width:100%">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Close</th>
-                <th>Volume</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="el in collection">
-                <td>{{ el.date }}</td>
-                <td>{{ el.close }}</td>
-                <td>{{ el.volume }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <input type="text" v-model="ticker">
     <button type="button" name="button" @click="req">Button</button>
+    <table style="width:100%">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Close</th>
+          <th>Volume</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="el in collection">
+          <td>{{ el.date }}</td>
+          <td>{{ el.close }}</td>
+          <td>{{ el.volume }}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -28,12 +29,15 @@ export default {
     return {
       msg: 'stuff',
       collection: [],
+      ticker: '',
     }
   },
   methods: {
     req() {
-      const ticker = 'AAPL';
-      axios.get(`http://127.0.0.1:5000/ticker/${ticker}`)
+      if (!this.ticker) {
+        return;
+      }
+      axios.get(`http://127.0.0.1:5000/ticker/${this.ticker}`)
       .then(response => {
         this.collection = response.data;
       })
