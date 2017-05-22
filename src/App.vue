@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <input type="text" v-model="ticker">
-    <button type="button" name="button" @click="req">Button</button>
+    <button type="button" name="button" @click="req">Get Last 3 Months</button>
+    <br>
+    <br>
     <table style="width:100%">
       <thead>
         <tr>
@@ -75,5 +77,14 @@ li {
 
 a {
   color: #42b983;
+}
+
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 4px;
 }
 </style>
