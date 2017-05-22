@@ -37,12 +37,12 @@ export default {
       if (!this.ticker) {
         return;
       }
-      axios.get(`http://127.0.0.1:5000/ticker/${this.ticker}`)
+      axios.get(`${window.location.href}ticker/${this.ticker}`)
       .then(response => {
         this.collection = response.data;
       })
       .catch(e => {
-        this.errors.push(e);
+        throw new Error(e);
       })
     }
   }
