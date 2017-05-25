@@ -2,6 +2,11 @@
   <div id="app">
     <input type="text" v-model="ticker">
     <button type="button" name="button" @click="req">Get Last 3 Months</button>
+    <div class="inputs">
+      <select>
+        <option v-for="time in uniqueTimes" :value="time.timestamp">{{ time.readable }}</option>
+      </select>
+    </div>
     <br>
     <br>
     <table style="width:100%">
@@ -25,6 +30,7 @@
 
 <script>
 import axios from 'axios';
+import _ from 'lodash';
 
 export default {
   data() {
@@ -32,6 +38,7 @@ export default {
       msg: 'stuff',
       collection: [],
       ticker: '',
+      uniqueTimes: [],
     }
   },
   methods: {
@@ -41,11 +48,21 @@ export default {
       }
       axios.get(`${window.location.href}ticker/${this.ticker}`)
       .then(response => {
-        this.collection = response.data;
+        this.collection = response.data.collection;
+        this.updateUniqueTimes();
       })
       .catch(e => {
         throw new Error(e);
       })
+    },
+    updateUniqueTimes() {
+      const times = this.collection.map(el => {
+        return {
+          readable: /\s\d\d:\d\d/.exec(el.date)[0].trim(),
+          timestamp: el.timestamp,
+        }
+      });
+      this.uniqueTimes = _.uniqBy(times, 'readable');
     }
   }
 }
