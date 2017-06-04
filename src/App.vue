@@ -13,6 +13,9 @@
       <thead>
         <tr>
           <th>Date</th>
+          <th>Low</th>
+          <th>High</th>
+          <th>Open</th>
           <th>Close</th>
           <th>Volume</th>
         </tr>
@@ -20,6 +23,9 @@
       <tbody>
         <tr v-for="el in collection">
           <td>{{ el.date }}</td>
+          <td>{{ el.low }}</td>
+          <td>{{ el.high }}</td>
+          <td>{{ el.open }}</td>
           <td>{{ el.close }}</td>
           <td>{{ el.volume }}</td>
         </tr>
