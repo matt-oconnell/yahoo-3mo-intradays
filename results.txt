@@ -1,3 +1,5 @@
+538 stocks
+
 09:30, 09:35, 09:35, 9:45
 total percent match average: 50.6921910783
 highest: GGP, at 68.3333333333
@@ -92,4 +94,49 @@ lowest: PNW, at 30.0
 total percent match average: 50.3230454454
 highest: SHW, at 70.0
 lowest: SPG, at 31.6666666667
+==========
+09:30, 11:00, 11:00, 11:20
+total percent match average: 49.9965418864
+highest: MAS, at 66.6666666667
+lowest: SPG, at 31.6666666667
+==========
+09:30, 11:00, 11:00, 11:25
+total percent match average: 50.6551684389
+highest: EQT, at 66.6666666667
+lowest: PNW, at 30.0
+==========
+09:30, 11:00, 11:00, 11:30
+total percent match average: 50.5672026743
+highest: PFG, at 70.0
+lowest: FE, at 31.6666666667
+==========
+12:00, 12:10, 12:10, 12:20
+total percent match average: 51.0622172272
+highest: ELY, at 70.0
+lowest: TGT, at 30.0
+==========
+12:05, 12:15, 12:15, 12:25
+total percent match average: 48.5158208697
+highest: DHR, at 70.0
+lowest: WFM, at 26.6666666667
+==========
+12:10, 12:20, 12:20, 12:30
+total percent match average: 48.6142330192
+highest: STX, at 70.0
+lowest: CI, at 30.0
+==========
+12:15, 12:25, 12:25, 12:35
+total percent match average: 48.1179937178
+highest: L, at 66.6666666667
+lowest: SIG, at 30.0
+==========
+12:20, 12:30, 12:30, 12:40
+total percent match average: 49.0220742918
+highest: SBAC, at 68.3333333333
+lowest: PYPL, at 31.6666666667
+==========
+12:25, 12:35, 12:35, 12:45
+total percent match average: 50.7004120919
+highest: AMGN, at 70.0
+lowest: NTES, at 35.0
 ==========

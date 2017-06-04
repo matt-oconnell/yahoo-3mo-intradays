@@ -70,17 +70,24 @@ def calc(ticker, s1, e1, s2, e2):
 
         total = len(results)
         matches = 0
+
+        percentages_1 = []
+        percentages_2 = []
         for date in results:
             if results[date]['1_direction'] == results[date]['2_direction']:
                 matches += 1
+                percentages_1.append(results[date]['1_percentage_change'])
+                percentages_2.append(results[date]['2_percentage_change'])
 
     except:
         print '{} errored'.format(ticker)
-        return 50
+        return (50, 0, 0)
     
+    avg_percentage_change_1 = sum(percentages_1) / len(percentages_1)
+    avg_percentage_change_2 = sum(percentages_2) / len(percentages_2)
     percent_match = matches / total * 100
-    print 'ticker: {}, percent_match: {}, total: {}, matches: {}'.format(ticker, percent_match, total, matches)
-    return percent_match
+    print 'ticker: {}, percent_match: {}, total: {}, matches: {}, p1: {}, p2: {}'.format(ticker, percent_match, total, matches, avg_percentage_change_1, avg_percentage_change_2)
+    return (percent_match, avg_percentage_change_1, avg_percentage_change_2)
 
 
 
@@ -89,24 +96,30 @@ def calc(ticker, s1, e1, s2, e2):
 seed_stocks = seed_nasdaq100.stocks + seed_custom.stocks + seed_iq_100.stocks + seed_s_p_500.stocks
 seed_stocks = list(set(seed_stocks))
 
-def backtest(s1, e1, s2, e2):
+def backtest(stocks, s1, e1, s2, e2):
     percent_matches = []
-    highest = { 'percent': 0, 'ticker': '' }
-    lowest = { 'percent': 100, 'ticker': '' }
-    for stock in seed_stocks:
-        percent_match = calc(stock, s1, e1, s2, e2)
+    highest = { 'percent': 0, 'ticker': '', 'p_change_1': 0, 'p_change_2': 0 }
+    lowest = { 'percent': 100, 'ticker': '', 'p_change_1': 0, 'p_change_2': 0 }
+    for stock in stocks:
+        (percent_match, avg_percentage_change_1, avg_percentage_change_2) = calc(stock, s1, e1, s2, e2)
         percent_matches.append(percent_match)
         if percent_match > highest['percent']:
             highest['percent'] = percent_match
             highest['ticker'] = stock
+            highest['p_change_1'] = avg_percentage_change_1
+            highest['p_change_2'] = avg_percentage_change_2
         if percent_match < lowest['percent']:
             lowest['percent'] = percent_match
             lowest['ticker'] = stock
+            lowest['p_change_1'] = avg_percentage_change_1
+            lowest['p_change_2'] = avg_percentage_change_2
 
     result_str = '{}, {}, {}, {}\n'.format(s1, e1, s2, e2)
     result_str += 'total percent match average: {}\n'.format(sum(percent_matches) / float(len(percent_matches)))
-    result_str += 'highest: {}, at {}\n'.format(highest['ticker'], highest['percent'])
-    result_str += 'lowest: {}, at {}\n==========\n'.format(lowest['ticker'], lowest['percent'])
+    result_str += 'HIGHEST: {}, at {}\n'.format(highest['ticker'], highest['percent'])
+    result_str += 'highest_percentage_changes: first: {} second: {}\n'.format(highest['p_change_1'], highest['p_change_2'])
+    result_str += 'LOWEST: {}, at {}\n'.format(lowest['ticker'], lowest['percent'])
+    result_str += 'lowest_percentage_changes: first: {} second: {}\n===============\n'.format(lowest['p_change_1'], highest['p_change_2'])
     print result_str
 
     f = open('results.txt', 'a')
@@ -114,10 +127,12 @@ def backtest(s1, e1, s2, e2):
     f.close()
 
 
-e1s_and_s2s = ['10:30', '10:30', '10:30', '10:30', '10:30', '10:30', '11:00', '11:00', '11:00', '11:00']
-e2s         = ['10:40', '10:50', '11:00', '11:10', '11:20', '11:30', '11:15', '11:20', '11:25', '11:30']
+e1s         = ['12:00', '12:05', '12:10', '12:15', '12:20', '12:25']
+e1s_and_s2s = ['12:10', '12:15', '12:20', '12:25', '12:30', '12:35']
+e2s         = ['12:20', '12:25', '12:30', '12:35', '12:40', '12:45']
 
-for i in range(len(e2s)):
-    backtest('09:30', e1s_and_s2s[i], e1s_and_s2s[i], e2s[i])
 
+# for i in range(len(e1s)):
+    # backtest(seed_custom.stocks, e1s[i], e1s_and_s2s[i], e1s_and_s2s[i], e2s[i])
+backtest(['PNC'], '09:30', '09:55', '09:55', '10:05')
 
