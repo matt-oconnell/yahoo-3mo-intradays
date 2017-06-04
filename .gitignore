@@ -39,4 +39,5 @@ npm-debug.log
 yarn-error.log
 
 #local
+data
 server/test.py

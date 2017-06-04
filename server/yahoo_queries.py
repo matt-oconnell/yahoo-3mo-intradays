@@ -3,6 +3,7 @@ import time
 import json
 from dateutil.relativedelta import relativedelta
 import urllib2
+import pickle_utils
 
 def generate_query(ticker, shorten_by=0):
     end_dt = datetime.datetime.now()
@@ -30,9 +31,22 @@ def call_until_full_response(ticker, shorten_by=0):
     else:
         return (json_res, query)
 
-def fetch(ticker):
-    (json_res, query) = call_until_full_response(ticker, 0)
+def filter_timestamps(times, timestamps):
+    filtered_timestamps = []
+    for i, timestamp in enumerate(timestamps):
+        time = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M')
+        if time in times:
+            filtered_timestamps.append({
+                'timestamp': timestamp,
+                'original_index': i
+            })
+    return filtered_timestamps
 
+def fetch(ticker, filters=['09:30', '10:00']):
+    (json_res, query) = pickle_utils.get_pickle_or_store(ticker + '.pickle', lambda: call_until_full_response(ticker, 0))
+    # (json_res, query) = call_until_full_response(ticker, 0)
+
+    
     core = json_res['chart']['result'][0]
     quotes = core['indicators']['quote'][0]
 
@@ -48,7 +62,11 @@ def fetch(ticker):
         'query': query
     }
 
-    for i, timestamp in enumerate(timestamps):
+    filtered_timestamps = filter_timestamps(filters, timestamps)
+
+    for filtered_ts in filtered_timestamps:
+        timestamp = filtered_ts['timestamp']
+        i = filtered_ts['original_index']
         volume = volumes[i]
         [hour, minute] = datetime.datetime.fromtimestamp(timestamp).strftime('%H:%M').split(':')
         if int(hour + minute) > 1600:
@@ -67,4 +85,4 @@ def fetch(ticker):
 
     return return_val
 
-# fetch('AAPL')
+fetch('NFLX')
