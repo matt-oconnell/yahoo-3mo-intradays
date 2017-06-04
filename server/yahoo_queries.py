@@ -7,6 +7,11 @@ import urllib2
 import pickle_utils
 import movement_utils
 import time
+#
+import seed_nasdaq100
+import seed_custom
+import seed_iq_100
+import seed_s_p_500
 
 def generate_query(ticker, shorten_by=0):
     end_dt = datetime.datetime.now()
@@ -21,9 +26,13 @@ def generate_query(ticker, shorten_by=0):
 def call_until_full_response(ticker, shorten_by=0):
     query = generate_query(ticker, shorten_by)
 
-    res = urllib2.urlopen(query)
-    read_res = res.read()
-    json_res = json.loads(read_res)
+    try:
+        res = urllib2.urlopen(query)
+        read_res = res.read()
+        json_res = json.loads(read_res)
+    except:
+        print '{} errored'.format(ticker)
+        return 0
 
     timestamps = json_res['chart']['result'][0]['timestamp']
 
@@ -52,143 +61,63 @@ def fetch(ticker):
 
 
 def calc(ticker, s1, e1, s2, e2):
-    start = time.time()
-    (json_res, query) = pickle_utils.get_pickle_or_store(ticker + '.pickle', lambda: call_until_full_response(ticker, 0))
-    end = time.time()
-    print 'pickle {}'.format(end - start)
-    
-    core_result = json_res['chart']['result'][0]
-    quotes = core_result['indicators']['quote'][0]
-    timestamps = core_result['timestamp']
-
     try:
-        start = time.time()
+        (json_res, query) = pickle_utils.get_pickle_or_store(ticker + '.pickle', lambda: call_until_full_response(ticker, 0))
+        core_result = json_res['chart']['result'][0]
+        quotes = core_result['indicators']['quote'][0]
+        timestamps = core_result['timestamp']
         results = movement_utils.calculate_probabilities(quotes, timestamps, s1, e1, s2, e2)
-        end = time.time()
-        print 'calc {}'.format(end - start)
+
+        total = len(results)
+        matches = 0
+        for date in results:
+            if results[date]['1_direction'] == results[date]['2_direction']:
+                matches += 1
+
     except:
         print '{} errored'.format(ticker)
-        return
-
-    total = len(results)
-    matches = 0
-    for date in results:
-        if results[date]['1_direction'] == results[date]['2_direction']:
-            matches += 1
+        return 50
     
-    percentMatch = matches / total * 100
-    print 'ticker: {}, percentMatch: {}, total: {}, matches: {}'.format(ticker, percentMatch, total, matches)
+    percent_match = matches / total * 100
+    print 'ticker: {}, percent_match: {}, total: {}, matches: {}'.format(ticker, percent_match, total, matches)
+    return percent_match
 
-stocks = [
-  "AAL",
-  "AAPL",
-  "ADBE",
-  "ADI",
-  "ADP",
-  "ADSK",
-  "AKAM",
-  "ALXN",
-  "AMAT",
-  "AMGN",
-  "AMZN",
-  "ATVI",
-  "AVGO",
-  "BIDU",
-  "BIIB",
-  "BMRN",
-  "CA",
-  "CELG",
-  "CERN",
-  "CHKP",
-  "CHTR",
-  "CTRP",
-  "CTAS",
-  "CSCO",
-  "CTXS",
-  "CMCSA",
-  "COST",
-  "CSX",
-  "CTSH",
-  "DISCA",
-  "DISCK",
-  "DISH",
-  "DLTR",
-  "EA",
-  "EBAY",
-  "ESRX",
-  "EXPE",
-  "FAST",
-  "FB",
-  "FISV",
-  "FOX",
-  "FOXA",
-  "GILD",
-  "GOOG",
-  "GOOGL",
-  "HAS",
-  "HSIC",
-  "HOLX",
-  "ILMN",
-  "INCY",
-  "INTC",
-  "INTU",
-  "ISRG",
-  "JBHT",
-  "JD",
-  "KLAC",
-  "KHC",
-  "LBTYA",
-  "LBTYK",
-  "LILA",
-  "LILAK",
-  "LRCX",
-  "QVCA",
-  "LVNTA",
-  "MAR",
-  "MAT",
-  "MCHP",
-  "MDLZ",
-  "MNST",
-  "MSFT",
-  "MU",
-  "MXIM",
-  "MYL",
-  "NCLH",
-  "NFLX",
-  "NTES",
-  "NVDA",
-  "ORLY",
-  "PAYX",
-  "PCAR",
-  "PCLN",
-  "PYPL",
-  "QCOM",
-  "REGN",
-  "ROST",
-  "SBAC",
-  "STX",
-  "SHPG",
-  "SIRI",
-  "SWKS",
-  "SBUX",
-  "SYMC",
-  "TMUS",
-  "TRIP",
-  "TSCO",
-  "TSLA",
-  "TXN",
-  "ULTA",
-  "VIAB",
-  "VOD",
-  "VRSK",
-  "VRTX",
-  "WBA",
-  "WDC",
-  "XLNX",
-  "XRAY",
-  "YHOO"
-]
 
-for stock in stocks:
-    calc(stock, '09:30', '09:50', '09:50', '10:00')
+
+# TESTING
+
+seed_stocks = seed_nasdaq100.stocks + seed_custom.stocks + seed_iq_100.stocks + seed_s_p_500.stocks
+seed_stocks = list(set(seed_stocks))
+
+def backtest(s1, e1, s2, e2):
+    percent_matches = []
+    highest = { 'percent': 0, 'ticker': '' }
+    lowest = { 'percent': 100, 'ticker': '' }
+    for stock in seed_stocks:
+        percent_match = calc(stock, s1, e1, s2, e2)
+        percent_matches.append(percent_match)
+        if percent_match > highest['percent']:
+            highest['percent'] = percent_match
+            highest['ticker'] = stock
+        if percent_match < lowest['percent']:
+            lowest['percent'] = percent_match
+            lowest['ticker'] = stock
+
+    result_str = '{}, {}, {}, {}\n'.format(s1, e1, s2, e2)
+    result_str += 'total percent match average: {}\n'.format(sum(percent_matches) / float(len(percent_matches)))
+    result_str += 'highest: {}, at {}\n'.format(highest['ticker'], highest['percent'])
+    result_str += 'lowest: {}, at {}\n==========\n'.format(lowest['ticker'], lowest['percent'])
+    print result_str
+
+    f = open('results.txt', 'a')
+    f.write(result_str)
+    f.close()
+
+
+e1s_and_s2s = ['10:30', '10:30', '10:30', '10:30', '10:30', '10:30', '11:00', '11:00', '11:00', '11:00']
+e2s         = ['10:40', '10:50', '11:00', '11:10', '11:20', '11:30', '11:15', '11:20', '11:25', '11:30']
+
+for i in range(len(e2s)):
+    backtest('09:30', e1s_and_s2s[i], e1s_and_s2s[i], e2s[i])
+
 

@@ -1,0 +1,95 @@
+09:30, 09:35, 09:35, 9:45
+total percent match average: 50.6921910783
+highest: GGP, at 68.3333333333
+lowest: BIDU, at 35.0
+==========
+09:30, 09:40, 09:40, 09:50
+total percent match average: 50.0382758658
+highest: XOM, at 70.0
+lowest: MNST, at 31.6666666667
+==========
+09:30, 09:45, 09:45, 09:55
+total percent match average: 50.6536464213
+highest: LVLT, at 70.0
+lowest: NWL, at 31.6666666667
+==========
+09:30, 09:50, 09:50, 10:00
+total percent match average: 50.4382909181
+highest: FITB, at 71.6666666667
+lowest: ZTS, at 31.6666666667
+==========
+09:30, 09:55, 09:55, 10:05
+total percent match average: 50.1123547184
+highest: PNC, at 76.6666666667
+lowest: KLAC, at 28.3333333333
+==========
+09:30, 10:00, 10:00, 10:10
+total percent match average: 50.6924598695
+highest: FOXA, at 70.0
+lowest: ORCL, at 31.6666666667
+==========
+09:30, 10:05, 10:05, 10:15
+total percent match average: 49.8478641852
+highest: ITW, at 68.3333333333
+lowest: DOV, at 33.3333333333
+==========
+09:30, 10:10, 10:10, 10:20
+total percent match average: 49.7658828716
+highest: NBR, at 73.3333333333
+lowest: AMGN, at 33.3333333333
+==========
+09:30, 10:15, 10:15, 10:25
+total percent match average: 49.9925276049
+highest: GGP, at 70.0
+lowest: D, at 31.6666666667
+==========
+09:30, 10:20, 10:20, 10:30
+total percent match average: 49.3989291359
+highest: ETFC, at 68.3333333333
+lowest: ULTA, at 33.3333333333
+==========
+09:30, 12:00, 12:00, 15:00
+total percent match average: 49.9030287312
+highest: COTY, at 68.3333333333
+lowest: CTXS, at 28.3333333333
+==========
+09:30, 12:30, 12:30, 16:00
+total percent match average: 48.9507506988
+highest: NBL, at 68.3333333333
+lowest: GILD, at 25.0
+==========
+09:30, 10:30, 10:30, 10:40
+total percent match average: 49.5709057376
+highest: SNAP, at 68.3333333333
+lowest: AYI, at 26.6666666667
+==========
+09:30, 10:30, 10:30, 10:50
+total percent match average: 50.2370248696
+highest: GS, at 66.6666666667
+lowest: INCY, at 35.0
+==========
+09:30, 10:30, 10:30, 11:00
+total percent match average: 49.2964900147
+highest: VRTX, at 66.6666666667
+lowest: LB, at 31.6666666667
+==========
+09:30, 10:30, 10:30, 11:10
+total percent match average: 49.6675888303
+highest: PDCO, at 71.6666666667
+lowest: HRL, at 30.0
+==========
+09:30, 10:30, 10:30, 11:20
+total percent match average: 49.3219215585
+highest: AON, at 68.3333333333
+lowest: WLTW, at 31.6666666667
+==========
+09:30, 10:30, 10:30, 11:30
+total percent match average: 49.3770352439
+highest: XL, at 66.6666666667
+lowest: PNW, at 30.0
+==========
+09:30, 11:00, 11:00, 11:15
+total percent match average: 50.3230454454
+highest: SHW, at 70.0
+lowest: SPG, at 31.6666666667
+==========

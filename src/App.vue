@@ -2,11 +2,17 @@
   <div id="app">
     <input type="text" v-model="ticker">
     <button type="button" name="button" @click="req">Get Last 3 Months</button>
-    <div class="inputs">
+    <br>
+    <input type="checkbox" v-model="filterChecked"></input>
+    <label>Filter</label>
+    <div v-if="filterChecked">
+      <input v-model="filters" type="text" placeholder="09:30,10:00,3:30"></input>
+    </div>
+    <!--<div class="inputs">
       <select>
         <option v-for="time in uniqueTimes" :value="time.timestamp">{{ time.readable }}</option>
       </select>
-    </div>
+    </div>-->
     <br>
     <br>
     <table style="width:100%">
@@ -45,6 +51,7 @@ export default {
       collection: [],
       ticker: '',
       uniqueTimes: [],
+      filterChecked: false,
     }
   },
   methods: {
