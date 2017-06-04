@@ -14,7 +14,6 @@ def index():
 @app.route('/ticker/<ticker>')
 def ticker(ticker):
     collection = yahoo_queries.fetch(ticker)
-    print collection
     return jsonify(collection)
 
 @app.route('/movement/')
@@ -24,8 +23,8 @@ def movement():
     e1 = request.args.get('e1')
     s2 = request.args.get('s2')
     e2 = request.args.get('e2')
-    collection = yahoo_queries.fetch(ticker)
-    return jsonify(collection)
+    results = yahoo_queries.calc(ticker, s1, e1, s2, e2)
+    return results
 
 @app.route('/js/<path:path>')
 def send_js(path):
